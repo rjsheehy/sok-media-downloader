@@ -78,7 +78,10 @@ class Client:
         if self.failed(stream):
             logger.error("[*] Failed to get stream for: {title}".format(title=video.name))
             return
-        dl_path = os.path.join(directory, video.name+'.mp4')
+        dl_path = os.path.join(directory, video.name.replace("/","")+'.mp4')
+        if os.path.exists(dl_path):
+            logger.warning("[*] Video %s already exists. Skipping..." % video.name)
+            return
         with open(dl_path, 'wb') as f:
             for chunk in stream.iter_content(chunk_size=1024):
                 if chunk:
