@@ -17,7 +17,11 @@ VIDEO_URL = "https://www.sok-media.com/player?session_id={video}&action=get_vide
 BASE_URL = "https://www.sok-media.com"
 LOGIN_URL = "https://www.sok-media.com/node?destination=node"
 
-logger = logging.getLogger()
+logger = logging.getLogger("SOK-Media-Downloader")
+logger.setLevel("INFO")
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel("INFO")
+logger.addHandler(stream_handler)
 
 
 class Content:
@@ -49,7 +53,7 @@ class Client:
         if self.failed(r):
             logger.error("[*] Failed to access login page")
             raise Exception("Failed connection")
-        soup = BeautifulSoup(r.content)
+        soup = BeautifulSoup(r.content, 'html.parser')
         div = soup.find(id="page_container")
         inputs = div.find_all("input", type="hidden")
         payload = {
@@ -74,9 +78,9 @@ class Client:
         if self.failed(stream):
             logger.error("[*] Failed to get stream for: {title}".format(title=video.name))
             return
-        dl_path = os.path.join(directory, video.name, '.mp4')
+        dl_path = os.path.join(directory, video.name+'.mp4')
         with open(dl_path, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=1024):
+            for chunk in stream.iter_content(chunk_size=1024):
                 if chunk:
                     f.write(chunk)
         logger.info("[*] Downloaded video: %s" % video.name)
@@ -89,6 +93,7 @@ class Client:
         return c
 
     def get_playlist(self, conference, cookies=None):
+        logger.info("[*] Getting playlist videos for {conference}".format(conference=conference.name))
         r = self._session.get(PLAYLIST_URL.format(conference=conference.id), cookies=cookies)
         if self.failed(r):
             logger.error("[*] Failed to get video playlist information for {conference}".format(conference=conference.name))
