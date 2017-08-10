@@ -7,10 +7,15 @@ import os
 import argparse
 from bs4 import BeautifulSoup
 
-Defcon = "Defcon"
-BSidesLV = "BSidesLV"
-AllowedChoices = (Defcon, BSidesLV)
-Conferences = {Defcon: 32, BSidesLV: 39}
+Defcon25 = "Defcon25"
+BSidesLV2017 = "BSidesLV2017"
+BlackhatUSA2017 = "Blackhat2017"
+Defcon24 = "Defcon24"
+BSidesLV2016 = "BSidesLV2016"
+BlackhatUSA2016 = "BlackhatUSA2016"
+
+AllowedChoices = (Defcon25, BSidesLV2017, BlackhatUSA2017, Defcon24, BSidesLV2016, BlackhatUSA2016)
+Conferences = {Defcon25: 41, BSidesLV2017: 46, BlackhatUSA2017: 40, Defcon24: 32, BSidesLV2016: 39, BlackhatUSA2016: 30 } 
 
 PLAYLIST_URL = "https://www.sok-media.com/player?action=get_playlist&conf_id={conference}"
 VIDEO_URL = "https://www.sok-media.com/player?session_id={video}&action=get_video"
@@ -71,7 +76,7 @@ class Client:
         logger.info("[*] Downloading video: %s" % video.name)
         r = self._session.get(VIDEO_URL.format(video=video.id), cookies=cookies)
         if self.failed(r):
-            logger.error("[*] Failed to get download URL: {title}".format(title=video.name))
+            logger.error("[*] Failed to get download URL: {title}".format(title=VIDEO_URL.format(video=video.id), cookies=cookies))
             return
         content = json.loads(r.content)
         stream = self._session.get(content['url'], stream=True)
