@@ -1,0 +1,10 @@
+results.2017.txt:
+
+Defcon 25 Video:
+magnet:?xt=urn:btih:c7e180576ccfe193f3af25ae3e74a506d3f4190b&dn=defcon25
+
+Blackhat USA 2017 Video:
+magnet:?xt=urn:btih:e719b4d9b3afcee4ccb2620de2a4cfe076da3a4c&dn=BlackhatUSA2017
+
+BSides Las Vegas 2017 (BsidesLV) Video:
+magnet:?xt=urn:btih:6c57605b754c0fc9485047006d434d58c9df6be8&dn=BSidesLV2017
